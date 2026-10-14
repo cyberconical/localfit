@@ -1,0 +1,9 @@
+{
+  "name": "localfit-tools",
+  "private": true,
+  "description": "Tests for the plan generator and the setup wizard (run with: npm install && npm test)",
+  "scripts": {
+    "test": "node test-wizard.js && node test-plans.js"
+  },
+  "devDependencies": { "jsdom": "^24.1.0" }
+}

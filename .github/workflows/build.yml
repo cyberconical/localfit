@@ -1,0 +1,205 @@
+name: Build Android
+
+# Builds the signed APK (direct install, Obtainium, F-Droid style) and the signed AAB (Google Play upload).
+# Without the signing secrets the build still runs and hands out UNSIGNED files, so forks and the very first run work.
+# Secrets: KEYSTORE_BASE64, KEYSTORE_PASSWORD  (see docs/RELEASING.md)
+# Optional repository variable: BASEMAP_BBOX = "west,south,east,north" bundles an offline map of that region (see map/README.md)
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+# A new push to the same pull request cancels the older, now outdated run.
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+env:
+  APP_ID: io.github.cyberconical.localfit
+  APP_NAME: Localfit
+  # The app never talks to a network. With "true" the build removes the INTERNET permission that Capacitor adds by
+  # default, so Android itself enforces it. If the installed app ever shows a blank screen, set this to "false" and tell us.
+  REMOVE_INTERNET: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Capacitor 8 needs Node 22 and Java 21. Target and compile SDK are 36 (Android 16), as Google Play requires.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Offline basemap (optional)
+        if: ${{ vars.BASEMAP_BBOX != '' }}
+        continue-on-error: true
+        env:
+          BBOX: ${{ vars.BASEMAP_BBOX }}
+        run: |
+          # Cut a small extract out of the daily Protomaps OpenStreetMap build.
+          # If this fails the app still works: it falls back to the plain line map.
+          mkdir -p basemap && cd basemap
+          url=$(curl -sSL https://api.github.com/repos/protomaps/go-pmtiles/releases/latest | grep -o 'https[^"]*Linux_x86_64.tar.gz' | head -1)
+          curl -sSL -o pm.tgz "$url"
+          tar xzf pm.tgz pmtiles
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            d=$(date -u -d "-$i day" +%Y%m%d)
+            if ./pmtiles extract "https://build.protomaps.com/$d.pmtiles" region.pmtiles --bbox="$BBOX" --maxzoom=14; then break; fi
+            rm -f region.pmtiles
+          done
+          ls -l region.pmtiles
+
+      - name: Prepare project
+        env:
+          BBOX: ${{ vars.BASEMAP_BBOX }}
+        run: |
+          mkdir www && cp index.html www/ && cp -r fonts map www/
+          if [ -f basemap/region.pmtiles ]; then
+            # 1 MB pieces: the Android file server cannot do partial reads of one big file (see index.html, baseSource)
+            mkdir -p www/map/region
+            split -b 1048576 -d -a 4 --additional-suffix=.pmtiles basemap/region.pmtiles www/map/region/p
+            python3 -c "import json,os; b=[float(x) for x in os.environ['BBOX'].split(',')]; json.dump({'bbox':b}, open('www/map/region.json','w'))"
+            echo "basemap pieces: $(ls www/map/region | wc -l)"
+          else echo 'No basemap file, using the line map'; fi
+          npm init -y
+          npm install @capacitor/core@8 @capacitor/android@8 @capacitor/filesystem@8 @capacitor/share@8
+          npm install -D @capacitor/cli@8
+          npm install --install-links ./plugins/run-tracker
+          echo "{\"appId\":\"$APP_ID\",\"appName\":\"$APP_NAME\",\"webDir\":\"www\"}" > capacitor.config.json
+          npx cap add android
+          # No Google services and no automatic cloud backup of app data
+          python3 - <<'PY'
+          import re
+          p = "android/app/build.gradle"
+          t = open(p).read()
+          t = re.sub(r"try \{\s*def servicesJSON.*?\n\}\s*catch\(Exception e\) \{.*?\n\}\n?", "", t, flags=re.S)
+          # keep the big map file uncompressed in the APK, so the WebView can read pieces of it without unpacking it from the start
+          t = re.sub(r"(?m)^android \{\n", "android {\n    androidResources {\n        noCompress 'pmtiles'\n    }\n", t, count=1)
+          open(p, "w").write(t)
+          p = "android/build.gradle"
+          t = open(p).read()
+          t = "\n".join(l for l in t.splitlines() if "com.google.gms:google-services" not in l) + "\n"
+          open(p, "w").write(t)
+          PY
+          sed -i 's/android:allowBackup="true"/android:allowBackup="false"/' android/app/src/main/AndroidManifest.xml
+          if [ "$REMOVE_INTERNET" = "true" ]; then sed -i '/android.permission.INTERNET/d' android/app/src/main/AndroidManifest.xml; fi
+          grep -q "noCompress 'pmtiles'" android/app/build.gradle || { echo "pmtiles would be compressed in the APK" >&2; exit 1; }
+          if grep -rn "google-services" android --include=*.gradle; then echo "Google services plugin is still included" >&2; exit 1; fi
+          grep -q 'android:allowBackup="false"' android/app/src/main/AndroidManifest.xml || { echo "allowBackup is not disabled" >&2; exit 1; }
+          grep -q 'targetSdkVersion = 36' android/variables.gradle || { echo "targetSdkVersion is not 36" >&2; cat android/variables.gradle; exit 1; }
+          python3 -c "import PIL" 2>/dev/null || pip install --break-system-packages pillow
+          python3 - <<'PY'
+          import os
+          from PIL import Image, ImageDraw
+          def draw(size, safe):
+              im = Image.new("RGBA", (size, size), (0, 0, 0, 255))
+              d = ImageDraw.Draw(im)
+              m = size * (1 - safe) / 2
+              x0, x1, cy = m, size - m, size / 2
+              w = x1 - x0
+              th = size * 0.075
+              d.rectangle([x0, cy - th / 2, x0 + w * 0.7, cy + th / 2], fill="white")
+              d.rectangle([x0 + w * 0.7, cy - th / 6, x1, cy + th / 6], fill="white")
+              for k in (0, 5, 10, 15, 20):
+                  x = x0 + w * k / 21.1
+                  d.rectangle([x - size * 0.007, cy + th * 0.9, x + size * 0.007, cy + th * 1.9], fill="white")
+              d.rectangle([x1 - size * 0.014, cy - size * 0.2, x1 + size * 0.014, cy + th * 1.9], fill="white")
+              return im
+          res = "android/app/src/main/res"
+          for name, (leg, fg) in {"mdpi": (48, 108), "hdpi": (72, 162), "xhdpi": (96, 216), "xxhdpi": (144, 324), "xxxhdpi": (192, 432)}.items():
+              d = f"{res}/mipmap-{name}"
+              draw(fg, 0.56).save(f"{d}/ic_launcher_foreground.png")
+              sq = draw(leg * 4, 0.74).resize((leg, leg), Image.LANCZOS)
+              sq.save(f"{d}/ic_launcher.png")
+              mask = Image.new("L", (leg * 4, leg * 4), 0)
+              ImageDraw.Draw(mask).ellipse([0, 0, leg * 4 - 1, leg * 4 - 1], fill=255)
+              rd = draw(leg * 4, 0.62); rd.putalpha(mask)
+              rd.resize((leg, leg), Image.LANCZOS).save(f"{d}/ic_launcher_round.png")
+          open(f"{res}/values/ic_launcher_background.xml", "w").write('<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#000000</color>\n</resources>\n')
+          PY
+          npx cap sync android
+          sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" android/app/build.gradle
+          TAG="${{ github.event.release.tag_name }}"
+          VN="${TAG#v}"
+          if [ -z "$VN" ]; then VN="0.0.0"; fi
+          sed -i "s/versionName \"1.0\"/versionName \"$VN\"/" android/app/build.gradle
+          grep -n "versionCode\|versionName" android/app/build.gradle
+          grep -n "applicationId" android/app/build.gradle
+
+      - name: Build APK and AAB
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease bundleRelease
+
+      - name: Check permissions
+        run: |
+          # If one of these permissions is missing, the app crashes when a recording starts (this happened with WAKE_LOCK).
+          M=$(find android/app/build/intermediates -path '*merged_manifests/release*' -name AndroidManifest.xml | head -1)
+          [ -n "$M" ] || { echo "Merged manifest not found" >&2; exit 1; }
+          echo "Manifest: $M"
+          for p in ACCESS_FINE_LOCATION FOREGROUND_SERVICE FOREGROUND_SERVICE_LOCATION WAKE_LOCK POST_NOTIFICATIONS VIBRATE; do
+            grep -q "android.permission.$p\"" "$M" || { echo "Missing permission: $p" >&2; exit 1; }
+          done
+          grep -q 'foregroundServiceType="location"' "$M" || { echo "Service type location is missing" >&2; exit 1; }
+          # Nothing that would need a bigger Play Store declaration: no background location.
+          if grep -q 'android.permission.ACCESS_BACKGROUND_LOCATION"' "$M"; then echo "Unexpected permission: ACCESS_BACKGROUND_LOCATION" >&2; exit 1; fi
+          # The privacy promise: no internet permission at all.
+          if [ "$REMOVE_INTERNET" = "true" ] && grep -q 'android.permission.INTERNET"' "$M"; then echo "INTERNET permission is still in the merged manifest" >&2; exit 1; fi
+          grep -c "uses-permission" "$M"
+
+      - name: Sign APK and AAB
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          APK=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          AAB=android/app/build/outputs/bundle/release/app-release.aab
+          [ -f "$APK" ] || { echo "APK not found" >&2; exit 1; }
+          [ -f "$AAB" ] || { echo "AAB not found" >&2; exit 1; }
+          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "::warning::No signing secrets set. Handing out UNSIGNED files. They cannot be installed or uploaded to Google Play."
+            cp "$APK" localfit.apk; cp "$AAB" localfit.aab
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
+          ALIAS=$(keytool -list -keystore release.keystore -storepass "$KEYSTORE_PASSWORD" 2>/dev/null | awk -F, '/PrivateKeyEntry/{print $1; exit}')
+          [ -n "$ALIAS" ] || { echo "No key found in the keystore" >&2; exit 1; }
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          "$BT/zipalign" -p -f 4 "$APK" aligned.apk
+          "$BT/apksigner" sign --ks release.keystore \
+            --ks-pass env:KEYSTORE_PASSWORD --key-pass env:KEYSTORE_PASSWORD \
+            --out localfit.apk aligned.apk
+          "$BT/apksigner" verify localfit.apk
+          # Google Play wants the bundle signed with the upload key (jarsigner), Play then re-signs the apps for users.
+          jarsigner -keystore release.keystore -storepass:env KEYSTORE_PASSWORD -keypass:env KEYSTORE_PASSWORD \
+            -sigalg SHA256withRSA -digestalg SHA-256 -signedjar localfit.aab "$AAB" "$ALIAS"
+          jarsigner -verify localfit.aab | grep -q "jar verified" || { echo "AAB signature not verified" >&2; exit 1; }
+          rm release.keystore
+
+      - name: Attach to release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" localfit.apk localfit.aab --clobber
+
+      - name: Upload as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: localfit-android
+          path: |
+            localfit.apk
+            localfit.aab

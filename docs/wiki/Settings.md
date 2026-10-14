@@ -1,0 +1,42 @@
+# Settings
+
+Open Settings with the icon at the top right. Everything saves automatically, and all your entries are kept.
+
+## Language
+
+**English** (default) or **German**. The switch changes every text of the app at once: menus, messages, the plan with all titles and descriptions, date and number formats (5.2 km or 5,2 km). Your own entries, such as notes or habit names, stay as you typed them. The choice is stored in the data set and travels with your backup. More: [[Translations|Translations]].
+
+## Your plan
+
+- A summary of your goal, dates and weekly rhythm, and the button **Change goal, week or sports**, which opens the setup again (see [[Plan generator|Plan-Generator]]). A new plan starts with week 1 on the next Monday.
+- Users of the earlier 27-week half marathon plan see their classic settings instead (race day, goal time, extra sessions on Monday, Tuesday and Friday) and a button to set up a new plan.
+- The goal time (race goals) is entered in the setup, as `h:mm:ss`. From it the app calculates the **goal pace** (goal time divided by the race distance), which appears in the descriptions of tempo sessions and in the pace chart.
+
+## Training
+
+- **A body part you want to watch** (up to 20 characters, for example knee or Achilles tendon). After every run the app asks how it feels, and the stats show its trend. Leave it empty to turn this off.
+
+## GPS and route
+
+- **Privacy zone around the start**: off, 150 m, 300 m (default), 500 m or 1 km.
+- **Save route**: yes (default) or no.
+- **Test mode: inaccurate GPS**: off (default) or on. Normally the tracker ignores GPS fixes with a reported error above 35 m. With test mode on it also records fixes up to 100 m, and ignores movement smaller than the reported error so wobble does not count as distance. Distance stays reliable when the phone reports a GPS speed; without a speed reading it is only approximate. Meant for testing indoors or in bad reception, turn it off for real runs. The diagnostic log then shows `test=1` and a separate count for fixes between 35 m and 100 m.
+- **Voice announcements**: off (default), every 500 m or every 1 km, and with test mode on also every 10 m (to hear a voice after a few steps). The setting is read when you press Start: a change during a recording applies from the next run, and the recording screen says so. While recording, a voice says the distance and the pace of the last stretch, then your average pace, in minutes per kilometer and **always in English**. The first announcement of a run adds “per kilometer”. **Test voice** plays a sample, so you can check that an English voice is installed and how loud it is. Only in the Android app; in the browser the setting just says so.
+
+See [[GPS recording|GPS-Recording]] and [[Privacy|Privacy]].
+
+## Diagnostics
+
+The anonymous log helps find out why a recording stops. You can switch it **on and off**, **view**, **share** and **delete** it. It contains no places, distances, dates, names or device identifiers. Details under [[Troubleshooting|Troubleshooting]]. The log does not exist in the browser.
+
+## Records
+
+Records per sport (running, bouldering, stretching, calisthenics). When adding one, the app suggests templates; for running for example longest run, 5 km, 10 km, half marathon and marathon. If you add a new record for the same discipline, the old one moves to “Earlier” automatically. A new longest run is added automatically if you already have a record for it. Template names follow the language setting.
+
+## Goals
+
+Personal goals per sport (or general) with an optional date. Check off goals you reach.
+
+## Delete all data
+
+At the very bottom of the page is “Delete all data”. The app asks first, because this can't be undone. The language setting is kept. Save a backup first, see [[Backup and data|Backup-and-Data]].
