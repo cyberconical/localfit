@@ -77,9 +77,14 @@ Notes:
 
 The release has no basemap by default (routes are drawn as a line). To bundle one, add a repository **variable** (not secret) `BASEMAP_BBOX` with `west,south,east,north`, for example `13.0,52.3,13.8,52.7` for Berlin, and build again. Keep the area small, see `map/README.md`. The official build uses Berlin (`12.95,52.30,13.85,52.72`). The setup screen tells users that street maps are only available for Berlin, Germany: when you change the region, also change `MAP_REGION` in `index.html`. If you do this, the app uses OpenStreetMap data; the copyright notice is already in the README and in `map/README.md`. Consider adding "© OpenStreetMap contributors" to the Play description.
 
-## 5. Take screenshots
+## 5. Screenshots and graphics (done, update when the app changes)
 
-The old screenshots belonged to the previous app and were removed. Take 4 to 8 phone screenshots from the real app (demo data is fine, never real routes of yours): the setup, the week view, a plan, a recording, the stats, German and dark mode. Play wants 16:9 or 9:16 PNG or JPEG between 320 and 3840 px on the long side. Put them into `docs/screenshots/` and into the README if you like.
+The store set is in `docs/store/`: icon (`icon-512.png`, `icon-1024.png`), feature graphic (`feature-graphic-1024x500.png`) and seven captioned screenshots in two sizes: `play/` (1080 x 1920, Google Play, aspect at most 2:1) and `apple/` (1290 x 2796, App Store 6.9 inch). Google accepts 2 to 8 phone screenshots.
+
+- Fresh app screens (setup, plan, stats, habits) come from the real app with demo data: `cd tools && npm install && CHROMIUM=... node screenshots.js ../docs/screenshots`. The map screens `docs/screenshots/map-*.png` were taken with the Berlin basemap on a phone (an earlier build; the map code is unchanged).
+- Compose the store images: `python3 tools/store-screenshots.py` (captions and order are at the top of that file).
+- Icons and graphics: `python3 tools/icons.py store docs/store`, `python3 tools/store-graphics.py`.
+- Replace screens by your own screenshots from the phone if you prefer: drop them into `docs/screenshots/` under the same names and run the compose script. Never use real routes of yours.
 
 ## 6. Google Play Console
 
@@ -124,6 +129,10 @@ The old screenshots belonged to the previous app and were removed. Take 4 to 8 p
 - Check that the name is free to use: search "Localfit" in the Play Store, in the trademark databases (TMview, DPMA, USPTO) and on GitHub. Names can collide even when the Play Store shows nothing.
 - Google Play's target API requirement rises every year (new apps and updates must target API 36 from 31 August 2026, with extensions possible until 1 November 2026). The build checks `targetSdkVersion = 36`; update it together with Capacitor when Google raises the level again.
 - Keep the keystore backup somewhere safe.
+
+## iPhone
+
+See [IOS.md](IOS.md). Not started; it needs a Swift version of the GPS plugin.
 
 ## Facts the app depends on
 
