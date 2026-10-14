@@ -149,12 +149,16 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
           ALIAS=$(keytool -list -keystore release.keystore -storepass "$KEYSTORE_PASSWORD" 2>/dev/null | awk -F, '/PrivateKeyEntry/{print $1; exit}')
           [ -n "$ALIAS" ] || { echo "No key found in the keystore" >&2; exit 1; }
-          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
-          "$BT/zipalign" -p -f 4 "$APK" aligned.apk
+          # Reproducible builds (F-Droid): sign the Gradle output as it is, so F-Droid can copy this signature onto
+          # its own build of the same commit. No zipalign (Gradle already aligns), build-tools 34 (apksigner 35+
+          # re-pads uncompressed entries), and no v1 signature (minSdk is 24, Android 7+ checks only v2/v3).
+          BT="$ANDROID_HOME/build-tools/34.0.0"
+          [ -x "$BT/apksigner" ] || yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;34.0.0" >/dev/null
           "$BT/apksigner" sign --ks release.keystore \
             --ks-pass env:KEYSTORE_PASSWORD --key-pass env:KEYSTORE_PASSWORD \
-            --out localfit.apk aligned.apk
-          "$BT/apksigner" verify localfit.apk
+            --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled true \
+            --out localfit.apk "$APK"
+          "$BT/apksigner" verify --verbose localfit.apk
           # Google Play wants the bundle signed with the upload key (jarsigner), Play then re-signs the apps for users.
           jarsigner -keystore release.keystore -storepass:env KEYSTORE_PASSWORD -keypass:env KEYSTORE_PASSWORD \
             -sigalg SHA256withRSA -digestalg SHA-256 -signedjar localfit.aab "$AAB" "$ALIAS"

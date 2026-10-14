@@ -40,7 +40,7 @@ Plan once the user approves:
 Work on `dev` (every push builds a signed pre-release for Obtainium). Bump `version.properties`, add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`, PR `dev` to `main` (the user merges PRs herself), then create a GitHub release with tag `vX.Y.Z` on `main`. CI refuses a tag that does not match versionName. F-Droid picks up new tags automatically once the app is merged (AutoUpdateMode Version, UpdateCheckMode Tags). Do not tag a new version while the F-Droid MR is under review. Details: `docs/RELEASING.md`, `docs/FDROID.md`.
 
 ## 6. Tooling notes and traps
-- Git identity: Claude <noreply@anthropic.com>. Commit trailers: `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>` and `Claude-Session: https://claude.ai/code/session_0172hq7YvUd8B36zGTMTEEuy`. PR bodies end with "🤖 Generated with [Claude Code](https://claude.com/claude-code)" plus the session URL.
+- Public text (commits, PRs, releases, MRs): no chat or session links and no names of AI tools.
 - GitHub: GraphQL blocked, use `gh api` REST. Actions variables/secrets API and log downloads are blocked (read jobs API and check annotations). Release assets: `gh api -H "Accept: application/octet-stream" repos/.../releases/assets/ID`.
 - GitLab job logs are big: always read with `byte_offset` near the end and a small `byte_limit`.
 - `fdroid rewritemeta` wraps long `sudo`/`build` lines at 80 characters and wants `output:` before `build:`. Pipelines fail on this; fix formatting, not logic.
