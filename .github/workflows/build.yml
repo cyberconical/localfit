@@ -50,28 +50,46 @@ jobs:
 
       - name: Offline basemap (optional)
         if: ${{ vars.BASEMAP_BBOX != '' }}
-        continue-on-error: true
         env:
           BBOX: ${{ vars.BASEMAP_BBOX }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Cut a small extract out of the daily Protomaps OpenStreetMap build.
-          # If this fails the app still works: it falls back to the plain line map.
+          # If this fails the app still builds (plain line map) and the reason is shown as a warning on the run page.
+          set +e
+          # tolerate typos in the variable: spaces, quotes, a trailing full stop
+          BBOX=$(printf '%s' "$BBOX" | tr -d ' "'"'"'\r\n' | sed 's/[.;]*$//')
+          echo "bbox: $BBOX"
           mkdir -p basemap && cd basemap
-          url=$(curl -sSL https://api.github.com/repos/protomaps/go-pmtiles/releases/latest | grep -o 'https[^"]*Linux_x86_64.tar.gz' | head -1)
-          curl -sSL -o pm.tgz "$url"
-          tar xzf pm.tgz pmtiles
+          fail() { echo "::warning title=Basemap not bundled::$1 | $(tail -c 700 log.txt 2>/dev/null | tr '\n' ' ')"; exit 0; }
+          : > log.txt
+          gh release download --repo protomaps/go-pmtiles --pattern '*Linux_x86_64*' --dir tool >> log.txt 2>&1
+          ls tool >> log.txt 2>&1
+          cd tool 2>/dev/null || fail "could not download the pmtiles tool"
+          for f in *.tar.gz; do [ -f "$f" ] && tar xzf "$f"; done
+          for f in *.zip; do [ -f "$f" ] && unzip -oq "$f"; done
+          cd ..
+          PM=$(find tool -type f -name pmtiles | head -1)
+          [ -n "$PM" ] || fail "pmtiles binary not found in the downloaded tool"
+          chmod +x "$PM"
+          ok=0
           for i in 1 2 3 4 5 6 7 8 9 10; do
             d=$(date -u -d "-$i day" +%Y%m%d)
-            if ./pmtiles extract "https://build.protomaps.com/$d.pmtiles" region.pmtiles --bbox="$BBOX" --maxzoom=14; then break; fi
+            echo "== build $d" >> log.txt
+            if "$PM" extract "https://build.protomaps.com/$d.pmtiles" region.pmtiles --bbox="$BBOX" --maxzoom=14 >> log.txt 2>&1 && [ -s region.pmtiles ]; then ok=1; break; fi
             rm -f region.pmtiles
           done
+          [ "$ok" = 1 ] || fail "extract failed for all 10 daily builds"
           ls -l region.pmtiles
+          echo "::notice title=Basemap::$(du -h region.pmtiles | cut -f1) extract of $BBOX from build $d"
 
       - name: Prepare project
         env:
           BBOX: ${{ vars.BASEMAP_BBOX }}
         run: |
           mkdir www && cp index.html www/ && cp -r fonts map www/
+          BBOX=$(printf '%s' "$BBOX" | tr -d ' "'"'"'\r\n' | sed 's/[.;]*$//')
+          export BBOX
           if [ -f basemap/region.pmtiles ]; then
             # 1 MB pieces: the Android file server cannot do partial reads of one big file (see index.html, baseSource)
             mkdir -p www/map/region
