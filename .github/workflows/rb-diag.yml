@@ -1,0 +1,22 @@
+# Temporary: fetches F-Droid's unsigned test build of v0.3.2 into a draft release for comparison. Delete after use.
+name: rb-diag
+on:
+  push:
+    branches: [rb-diag]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch F-Droid unsigned build and tool versions
+        run: |
+          curl -fL -o fdroid-unsigned-302000.apk "https://gitlab.com/jobsvmk/fdroiddata/-/jobs/17175942978/artifacts/raw/tmp/io.github.cyberconical.localfit_302000.apk"
+          sha256sum fdroid-unsigned-302000.apk
+          ls "$ANDROID_HOME/build-tools" > runner-build-tools.txt
+          java -version 2>> runner-build-tools.txt
+          cat runner-build-tools.txt
+      - name: Park in a draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create rb-diag-tmp fdroid-unsigned-302000.apk runner-build-tools.txt --draft --target rb-diag --title "rb diag (temporary)" --notes "Temporary file for comparing builds. Will be deleted." -R "${{ github.repository }}"
