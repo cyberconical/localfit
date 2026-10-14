@@ -8,6 +8,7 @@ The workflow `.github/workflows/build.yml` (“Build Android”) runs
 
 - on every **published release**. The signed APK and AAB are attached to the release.
 - **manually** via the “Actions” tab, “Build Android”, “Run workflow” (choose a branch). The files are then available as the artifact `localfit-android` of that run.
+- on every **push to the `dev` branch**. The build is published as a signed pre-release `dev-<number>` for testing with Obtainium (see [RELEASING.md](https://github.com/cyberconical/localfit/blob/main/docs/RELEASING.md)).
 - on every **pull request** against `main` (and on every new push to it). The check is called `build`. In the repository settings under Branches it can be made a required check, so nothing reaches `main` without a green build.
 
 A run takes a few minutes. Without the signing secrets the build still runs and hands out **unsigned** files (with a warning), so forks and the very first run work.
