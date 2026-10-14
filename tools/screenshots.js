@@ -35,7 +35,7 @@ const FAKE = () => {
   window.__fix = (lat, lon, acc, speed) => { if (cb) cb({ coords: { latitude: lat, longitude: lon, accuracy: acc, speed }, timestamp: Date.now() }); };
 };
 
-const W = 390, H = 800, DPR = 3;
+const W = 390, H = 845, DPR = 3;   // 1170 x 2535, the same 1 : 2.17 as a current phone (and as the old map screens)
 const hasMap = fs.existsSync(path.join(ROOT, "map", "region.json"));
 
 async function newPage(browser, { state, dark, lang, geo, fake }) {
