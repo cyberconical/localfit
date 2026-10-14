@@ -1,9 +1,8 @@
-map/region/
-map/region.json
-.work/
+/map/region/
+/map/region.json
+/.work/
 node_modules/
-android/
-www/
+/android/
+/www/
 *.keystore
 *.jks
-release.keystore

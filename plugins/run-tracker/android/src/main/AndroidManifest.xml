@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Precise location via GPS. Approximate location is requested too, because Android 12 and newer require it. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Foreground service, so recording continues while the screen is off -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <!-- Keep the CPU awake so interval vibrations come on time. Without this permission Android ends the app when an interval recording starts. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Show the service notification on Android 13 and newer -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Vibration cue when switching between intervals -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+
+    <!-- Voice announcements use the phone's own text-to-speech. Android 11 and newer only let an app find the speech engine if it asks for it here. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
+    <application>
+        <service
+            android:name="io.github.cyberconical.localfit.runtracker.RunTrackerService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+    </application>
+</manifest>
