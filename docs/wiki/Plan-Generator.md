@@ -1,6 +1,6 @@
 # Plan generator
 
-Localfit does not ship one fixed plan. On first start, a short setup asks for a few things and builds a plan on the device. Nothing is sent anywhere; the generator is ordinary code in `index.html`.
+LocalFit does not ship one fixed plan. On first start, a short setup asks for a few things and builds a plan on the device. Nothing is sent anywhere; the generator is ordinary code in `index.html`.
 
 ## The setup
 

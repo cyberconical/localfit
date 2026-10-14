@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Localfit app icon: three white steps, one sport each (yoga, bouldering, running), on black.
+"""LocalFit app icon: three white steps, one sport each (yoga, bouldering, running), on black.
 
 One drawing, used by the CI build (Android launcher icons) and for the store graphics.
 
@@ -58,8 +58,8 @@ def glyph(size, fill, bg=(0, 0, 0, 255)):
 
     m = Image.new("L", (n, n), 0)
     d = ImageDraw.Draw(m)
-    s = 32
-    pos = [(5, 63), (34, 34), (63, 5)]
+    s = 34
+    pos = [(2, 64), (33, 33), (64, 2)]
     for (x, y) in pos:
         a, b = P(x, y), P(x + s, y + s)
         d.rounded_rectangle([a[0], a[1], b[0], b[1]], radius=6.5 * u, fill=255)
@@ -92,10 +92,10 @@ def android(res):
         d = os.path.join(res, "mipmap-" + name)
         os.makedirs(d, exist_ok=True)
         # adaptive icon foreground: transparent, the mark inside the 66 % safe zone of the 108 dp canvas
-        f = glyph(fg, 0.50, bg=None)
+        f = glyph(fg, 0.52, bg=None)
         f.save(os.path.join(d, "ic_launcher_foreground.png"))
-        glyph(legacy, 0.80).save(os.path.join(d, "ic_launcher.png"))
-        big = glyph(legacy * SS, 0.72)
+        glyph(legacy, 0.86).save(os.path.join(d, "ic_launcher.png"))
+        big = glyph(legacy * SS, 0.74)
         mask = Image.new("L", big.size, 0)
         ImageDraw.Draw(mask).ellipse([0, 0, big.size[0] - 1, big.size[1] - 1], fill=255)
         big.putalpha(mask)
@@ -109,8 +109,8 @@ def android(res):
 def store(out):
     os.makedirs(out, exist_ok=True)
     # Google Play and the App Store apply their own mask, so these are full squares without transparency
-    glyph(512, 0.72).convert("RGB").save(os.path.join(out, "icon-512.png"))
-    glyph(1024, 0.72).convert("RGB").save(os.path.join(out, "icon-1024.png"))
+    glyph(512, 0.84).convert("RGB").save(os.path.join(out, "icon-512.png"))
+    glyph(1024, 0.84).convert("RGB").save(os.path.join(out, "icon-1024.png"))
 
 
 if __name__ == "__main__":

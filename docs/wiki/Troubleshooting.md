@@ -4,7 +4,7 @@
 
 | Problem | What helps |
 |---|---|
-| “The app can't record without your precise location” | In the Android settings under Apps, Localfit, Permissions, allow precise location. |
+| “The app can't record without your precise location” | In the Android settings under Apps, LocalFit, Permissions, allow precise location. |
 | “Location is turned off” | Turn on location in quick settings and start again. |
 | “A recording is already running” | The app reattaches to it. Otherwise open it via the run bar at the bottom and finish it. |
 | “Searching for GPS …” takes long | Go under open sky and wait one or two minutes. The first fix takes longer after a long break. |
@@ -22,7 +22,7 @@
 
 Some phone makers end apps in the background despite the foreground service. Then the fixes are gone (they deliberately live only in memory). What helps:
 
-1. In the Android settings under Apps, Localfit, Battery, turn off optimization (“Unrestricted” or “Don't optimize”, depending on the manufacturer).
+1. In the Android settings under Apps, LocalFit, Battery, turn off optimization (“Unrestricted” or “Don't optimize”, depending on the manufacturer).
 2. Don't swipe the app away if your device is known for this.
 3. Look at the diagnostic log. If it says `exit:LOW_MEMORY` or `svc:destroy running=1`, it was the system.
 
@@ -89,7 +89,7 @@ The event words are fixed technical codes and don't change with the language set
 
 1. Under Settings, Diagnostics, choose “Share”. The file is called `localfit-diagnostics.txt` and starts with a note on what is not in it.
 2. Read it once before passing it on. You see exactly what you share.
-3. Open an [issue](https://github.com/cyberconical/localfit/issues): what you did, what happened, the app version (Android settings, Apps, Localfit) and the log.
+3. Open an [issue](https://github.com/cyberconical/localfit/issues): what you did, what happened, the app version (Android settings, Apps, LocalFit) and the log.
 4. Afterwards you can delete the log under Settings, Diagnostics.
 
 For developers: [[Android plugin|Android-Plugin]], section “Events”.

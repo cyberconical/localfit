@@ -20,7 +20,7 @@ flowchart TB
   A["Checkout, Node 22, Java 21"] --> M["optional: cut a regional basemap<br/>(variable BASEMAP_BBOX)"]
   M --> B["www/ = index.html + fonts/ + map/"]
   B --> C["install Capacitor 8 + Filesystem + Share<br/>+ plugin run-tracker"]
-  C --> D["npx cap add android<br/>app name: Localfit"]
+  C --> D["npx cap add android<br/>app name: LocalFit"]
   D --> E["remove Google services plugin<br/>allowBackup = false<br/>remove INTERNET permission"]
   E --> F{"check: Google gone? backup off?<br/>target SDK 36?"}
   F -->|no| X["stop"]

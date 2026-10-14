@@ -1,4 +1,4 @@
-# Releasing Localfit
+# Releasing LocalFit
 
 This is the checklist for everything that cannot be done from inside the repository: accounts, keys, secrets, the first build and Google Play. Do the steps in order.
 
@@ -95,7 +95,7 @@ The store set is in `docs/store/`: icon (`icon-512.png`, `icon-1024.png`), featu
 
 ### Create the app
 
-1. "Create app": name `Localfit: Private Training` (or just `Localfit`), default language English (United States) or German, type App, free.
+1. "Create app": name `LocalFit: Private Training` (or just `LocalFit`), default language English (United States) or German, type App, free.
 2. Accept the declarations. Note that the package ID is fixed by the first AAB you upload.
 3. Dashboard, "Set up your app": fill in everything listed there. The texts are in `docs/store/listing.md`:
    - Privacy policy URL: `https://github.com/cyberconical/localfit/blob/main/PRIVACY.md`
@@ -126,7 +126,7 @@ The store set is in `docs/store/`: icon (`icon-512.png`, `icon-1024.png`), featu
 
 ## 7. Before you call it done
 
-- Check that the name is free to use: search "Localfit" in the Play Store, in the trademark databases (TMview, DPMA, USPTO) and on GitHub. Names can collide even when the Play Store shows nothing.
+- Check that the name is free to use: search "LocalFit" in the Play Store, in the trademark databases (TMview, DPMA, USPTO) and on GitHub. Names can collide even when the Play Store shows nothing.
 - Google Play's target API requirement rises every year (new apps and updates must target API 36 from 31 August 2026, with extensions possible until 1 November 2026). The build checks `targetSdkVersion = 36`; update it together with Capacitor when Google raises the level again.
 - Keep the keystore backup somewhere safe.
 

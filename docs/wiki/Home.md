@@ -1,4 +1,4 @@
-# Localfit
+# LocalFit
 
 A lean Android app for local-first training: a plan built for your goal and your week, a log for running and other sports, GPS recording, habits and statistics in one place. It runs completely offline. All data stays on your device.
 

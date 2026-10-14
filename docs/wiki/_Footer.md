@@ -1,1 +1,1 @@
-Localfit · GPL-3.0-or-later · [Repository](https://github.com/cyberconical/localfit) · These pages live in the repository under `docs/wiki/` and are published to the wiki from there. Please change them there through a pull request.
+LocalFit · GPL-3.0-or-later · [Repository](https://github.com/cyberconical/localfit) · These pages live in the repository under `docs/wiki/` and are published to the wiki from there. Please change them there through a pull request.

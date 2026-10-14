@@ -4,7 +4,7 @@ Texts to paste into the Play Console. Graphics are in this folder (`icon-512.png
 
 ## App name (max 30 characters)
 
-Localfit: Private Training
+LocalFit: Private Training
 
 ## Short description (max 80 characters)
 
@@ -14,12 +14,12 @@ Local-first training plans. No account, no tracking, no cloud.
 
 The private, open-source way to train. No account, no cloud, no ads.
 
-Localfit builds a training plan around your goal and your week, records your runs on a map, and keeps everything on your phone. Nothing is uploaded, nothing is shared, there is no feed. The app has no internet permission at all, and the code is open source so you can check.
+LocalFit builds a training plan around your goal and your week, records your runs on a map, and keeps everything on your phone. Nothing is uploaded, nothing is shared, there is no feed. The app has no internet permission at all, and the code is open source so you can check.
 
 YOUR PLAN
 • Choose a goal: 5 km, 10 km, half marathon, marathon, or simply get fitter
 • Pick your level and what you do on which weekday: running, strength, bouldering, calisthenics, stretching, yoga, swimming, cycling or a free workout
-• Localfit generates the plan on the spot, counts back from your race day and adds intervals, tempo runs, recovery weeks and a taper
+• LocalFit generates the plan on the spot, counts back from your race day and adds intervals, tempo runs, recovery weeks and a taper
 • Adjust any session, or rebuild the plan whenever life changes
 
 RUN WITH GPS (OPTIONAL)
@@ -42,7 +42,7 @@ MORE
 
 Free and open source (GPL-3.0). Source code and issues: github.com/cyberconical/localfit
 
-Localfit is a training aid, not medical advice. If you are unsure whether a plan is right for you, talk to a doctor first.
+LocalFit is a training aid, not medical advice. If you are unsure whether a plan is right for you, talk to a doctor first.
 
 ## Category and tags
 
@@ -61,7 +61,7 @@ Privacy policy URL: https://github.com/cyberconical/localfit/blob/main/PRIVACY.m
 | Is all of the user data collected by your app encrypted in transit? | not applicable (nothing is collected or transmitted) |
 | Do you provide a way for users to request that their data be deleted? | not applicable (no data leaves the device; uninstalling deletes everything) |
 
-Rationale: Google defines "collect" as transmitting data off the device. Localfit has no network access and sends nothing. Location is only processed on the device. If Google's console asks you to declare anything about location anyway, answer "processed on device only, not collected".
+Rationale: Google defines "collect" as transmitting data off the device. LocalFit has no network access and sends nothing. Location is only processed on the device. If Google's console asks you to declare anything about location anyway, answer "processed on device only, not collected".
 
 ## App content declarations
 

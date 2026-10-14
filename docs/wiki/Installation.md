@@ -17,7 +17,7 @@ The app is distributed as a signed APK file through GitHub. A Google Play versio
 
 Requirement: **Android 7.0 or newer**.
 
-On the home screen the app is called “Localfit”. The language inside the app is chosen separately under Settings, see [[Settings|Settings]].
+On the home screen the app is called “LocalFit”. The language inside the app is chosen separately under Settings, see [[Settings|Settings]].
 
 ## Updates and your data
 

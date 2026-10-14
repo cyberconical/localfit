@@ -2,7 +2,7 @@
 
 ## Your plan
 
-Localfit builds your plan in the setup on first start (see [[Plan generator|Plan-Generator]]). The plan consists of weeks, and every week has one session per weekday that you did not mark as free. A weekday holds a **run** or one **other sport**: strength, bouldering, calisthenics, stretching, yoga, swimming, cycling, a free workout, or nothing.
+LocalFit builds your plan in the setup on first start (see [[Plan generator|Plan-Generator]]). The plan consists of weeks, and every week has one session per weekday that you did not mark as free. A weekday holds a **run** or one **other sport**: strength, bouldering, calisthenics, stretching, yoga, swimming, cycling, a free workout, or nothing.
 
 Which runs you get depends on your goal and level:
 

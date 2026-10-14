@@ -27,7 +27,7 @@ permissions:
 
 env:
   APP_ID: io.github.cyberconical.localfit
-  APP_NAME: Localfit
+  APP_NAME: LocalFit
   # The app never talks to a network. With "true" the build removes the INTERNET permission that Capacitor adds by
   # default, so Android itself enforces it. If the installed app ever shows a blank screen, set this to "false" and tell us.
   REMOVE_INTERNET: "true"

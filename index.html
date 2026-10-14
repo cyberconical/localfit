@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Localfit</title>
+<title>LocalFit</title>
 <style>
 /* Schrift: Instrument Sans (SIL Open Font License 1.1), liegt lokal in fonts/. Es werden keine Server aufgerufen. */
 @font-face{
@@ -360,7 +360,7 @@ dialog.sheet::backdrop{ background:rgba(0,0,0,.5); }
 
 <header class="topbar">
   <div class="topbar-in">
-    <div class="brand"><span>Localfit</span><small id="sync" data-t>Saved automatically</small></div>
+    <div class="brand"><span>LocalFit</span><small id="sync" data-t>Saved automatically</small></div>
     <div class="topbar-r">
       <button class="iconbtn" id="settingsBtn" type="button" aria-label="Settings" data-t-aria="Settings" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5"/><line x1="2" y1="11" x2="20" y2="11"/><line x1="2" y1="17" x2="20" y2="17"/><circle cx="7" cy="5" r="2.5" fill="var(--bg)"/><circle cx="15" cy="11" r="2.5" fill="var(--bg)"/><circle cx="9" cy="17" r="2.5" fill="var(--bg)"/></svg></button>
       <button class="save" id="saveBtn" type="button">All saved</button>
@@ -705,9 +705,9 @@ window.HM_I18N = { de: {
 "h": "Std.",
 "Habits": "Gewohnheiten",
 "Half marathon": "Halbmarathon",
-"Localfit diagnostics": "Localfit Diagnose",
+"LocalFit diagnostics": "LocalFit Diagnose",
 "Half marathon goal time": "Zielzeit Halbmarathon",
-"Localfit, anonymous diagnostic log": "Localfit, anonymes Diagnose-Protokoll",
+"LocalFit, anonymous diagnostic log": "LocalFit, anonymes Diagnose-Protokoll",
 "Handstand": "Handstand",
 "Heat loosens your muscles and helps recovery. Drink plenty afterwards.": "Wärme lockert die Muskeln und hilft bei der Regeneration. Danach viel trinken.",
 "Helps find out why a recording stops. It only records technical events, for example “service started” or why Android last ended the app. It never contains places, distances, dates, names or a device ID. The file stays on the device until you share it yourself.": "Hilft zu klären, warum eine Aufzeichnung abbricht. Es hält nur technische Ereignisse fest, zum Beispiel „Dienst gestartet“ oder warum Android die App zuletzt beendet hat. Nie enthalten sind Orte, Strecken, Datum, Namen oder eine Gerätekennung. Die Datei bleibt auf dem Gerät, bis du sie selbst teilst.",
@@ -964,7 +964,7 @@ window.HM_I18N = { de: {
 "That's {pace} per kilometer.": "Das sind {pace} pro Kilometer.",
 "The 10 km are done.": "Die 10 km sind geschafft.",
 "The 10 km are done. {x} is coming along.": "Die 10 km sind geschafft. {x} macht mit.",
-"The app can't record without your precise location. Allow it in the Android settings under Apps, Localfit, Permissions.": "Ohne den genauen Standort kann die App nicht aufzeichnen. Erlaube ihn in den Android-Einstellungen unter Apps, Localfit, Berechtigungen.",
+"The app can't record without your precise location. Allow it in the Android settings under Apps, LocalFit, Permissions.": "Ohne den genauen Standort kann die App nicht aufzeichnen. Erlaube ihn in den Android-Einstellungen unter Apps, LocalFit, Berechtigungen.",
 "The app found {n} fast segments in the plan and signals every change by vibration. The screen may stay off.": "Die App erkennt {n} Tempo-Abschnitte im Plan und meldet jeden Wechsel per Vibration. Der Bildschirm darf aus bleiben.",
 "The app only records distance, time and route. The screen may stay off.": "Die App zeichnet nur Strecke, Zeit und Route auf. Der Bildschirm darf aus bleiben.",
 "The backup could not be shared.": "Das Backup konnte nicht geteilt werden.",
@@ -1045,7 +1045,7 @@ window.HM_I18N = { de: {
 "Your week: {week}.": "Deine Woche: {week}.",
 "Zoom in": "Vergrößern",
 "Zoom out": "Verkleinern",
-/* Localfit: setup wizard and generated plans */
+/* LocalFit: setup wizard and generated plans */
 "Goal: {event} on {date}.": "Ziel: {event} am {date}.",
 "Your plan runs until {date}.": "Dein Plan läuft bis {date}.",
 "{n} sessions done so far. Keep your rhythm.": "Bisher {n} Einheiten erledigt. Bleib in deinem Rhythmus.",
@@ -1055,7 +1055,7 @@ window.HM_I18N = { de: {
 "Days left": "Tage übrig",
 "{n} weeks": "{n} Wochen",
 "{km} km in {time}. You did it.": "{km} km in {time}. Du hast es geschafft.",
-"Localfit backup": "Localfit-Backup",
+"LocalFit backup": "LocalFit-Backup",
 "run": "Lauf",
 "5 km race": "5-km-Lauf",
 "10 km race": "10-km-Lauf",
@@ -1419,7 +1419,7 @@ const pick = x => x==null ? "" : typeof x==="string" ? x : (x[LANG] || x.en);
 /* Static markup: data-t (text), data-t-ph (placeholder), data-t-aria (aria-label). The English text in the markup is the key. */
 function applyStatic(){
   document.documentElement.lang = LANG;
-  document.title = "Localfit";
+  document.title = "LocalFit";
   document.querySelectorAll("[data-t]").forEach(el=>{ if(!el.dataset.t) el.dataset.t=el.textContent.trim(); el.textContent=tr(el.dataset.t); });
   document.querySelectorAll("[data-t-ph]").forEach(el=>{ el.placeholder=tr(el.dataset.tPh); });
   document.querySelectorAll("[data-t-aria]").forEach(el=>{ el.setAttribute("aria-label", tr(el.dataset.tAria)); });
@@ -2419,7 +2419,7 @@ const mmss = s => { s=Math.max(0,Math.round(s)); return Math.floor(s/60)+":"+Str
 const hhmmss = s => { s=Math.max(0,Math.floor(s)); const h=Math.floor(s/3600); return (h?h+":":"")+String(Math.floor(s%3600/60)).padStart(h?2:1,"0")+":"+String(s%60).padStart(2,"0"); };
 function gpsErr(code){
   return ({
-    PERMISSION:tr("The app can't record without your precise location. Allow it in the Android settings under Apps, Localfit, Permissions."),
+    PERMISSION:tr("The app can't record without your precise location. Allow it in the Android settings under Apps, LocalFit, Permissions."),
     GPS_OFF:tr("Location is turned off. Turn it on in quick settings and start again."),
     RUNNING:tr("A recording is already running."),
     NOGEO:tr("This device or browser doesn't provide a location."),
@@ -2593,10 +2593,10 @@ async function diagShow(){
 async function diagShare(){
   const txt=await diagLoad(), cap=window.Capacitor;
   if(!txt || !txt.trim()){ toast(tr("Nothing to share."),tr("The log is empty.")); return; }
-  const body=tr("Localfit, anonymous diagnostic log")+"\n("+tr("no places, no dates, no names; time = seconds since process start")+")\n\n"+txt;
+  const body=tr("LocalFit, anonymous diagnostic log")+"\n("+tr("no places, no dates, no names; time = seconds since process start")+")\n\n"+txt;
   try{
     const f=await cap.Plugins.Filesystem.writeFile({path:"localfit-diagnostics.txt", data:body, directory:"CACHE", encoding:"utf8"});
-    await cap.Plugins.Share.share({title:tr("Localfit diagnostics"), url:f.uri, dialogTitle:tr("Share diagnostics")});
+    await cap.Plugins.Share.share({title:tr("LocalFit diagnostics"), url:f.uri, dialogTitle:tr("Share diagnostics")});
   }catch(e){ if(!/cancel/i.test(String((e&&e.message)||e))) toast(tr("That didn't work."),tr("The log could not be shared.")); }
 }
 
@@ -3209,7 +3209,7 @@ saveBtn.addEventListener("click", async ()=>{
   if(cap && cap.isNativePlatform && cap.isNativePlatform() && cap.Plugins && cap.Plugins.Filesystem && cap.Plugins.Share){
     try{
       const f=await cap.Plugins.Filesystem.writeFile({path:"localfit-backup.html", data:html, directory:"CACHE", encoding:"utf8"});
-      await cap.Plugins.Share.share({title:tr("Localfit backup"), url:f.uri, dialogTitle:tr("Save backup to …")});
+      await cap.Plugins.Share.share({title:tr("LocalFit backup"), url:f.uri, dialogTitle:tr("Save backup to …")});
       setDirty(false); toast(tr("Backup ready."),tr("Choose Drive, Files or a messenger to store it."));
     }catch(e){ if(!/cancel/i.test(String((e&&e.message)||e))) toast(tr("That didn't work."),tr("The backup could not be shared.")); }
     return;
@@ -3752,7 +3752,7 @@ function wizHTML(){
   let body="";
   if(w.step===0){
     body=`${w.first
-      ? `<p class="wiz-brand">Localfit</p><h2 id="wizH" tabindex="-1">${tr("Welcome. Let's set up your plan.")}</h2>
+      ? `<p class="wiz-brand">LocalFit</p><h2 id="wizH" tabindex="-1">${tr("Welcome. Let's set up your plan.")}</h2>
          <p class="note">${tr("Everything stays on this device. No account, no tracking, no cloud.")}</p>
          <p class="hint">${tr("Street maps are currently only available for {region}. Elsewhere your route is shown as a plain line without a map.",{region:pick(MAP_REGION)})}</p>
          <div style="margin-top:14px">${chipRow(LANGS, LANG, "data-wlang")}</div>`
