@@ -54,7 +54,7 @@ If you used the previous 27-week half marathon version of this app, restoring yo
 - Optional GPS recording: distance, time, pace, every kilometer and the route. It only tracks, and the screen may stay off.
 - A live map while recording, showing your position, the accuracy circle and the track so far.
 - Optional voice announcements every 500 m or 1 km, in English.
-- The route appears as a map in the run and, overlaid, in the stats. Drag to move it, pinch or double tap to zoom, or open it full screen. GPS noise is smoothed so the line follows your path. You can bundle an offline basemap for your region at build time (see [map/README.md](map/README.md)); without it the route is drawn as a clean line.
+- The route appears as a map in the run and, overlaid, in the stats. Drag to move it, pinch or double tap to zoom, or open it full screen. GPS noise is smoothed so the line follows your path. The official build bundles an offline street map for Berlin, Germany only; elsewhere the route is drawn as a clean line. You can bundle your own region at build time (see [map/README.md](map/README.md)).
 
 **Habits**
 - Create your own habits, check them off per day or enter a number.

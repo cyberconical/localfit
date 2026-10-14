@@ -30,7 +30,7 @@ PLAN
 
 GPS RECORDING (OPTIONAL)
 • Distance, time, pace and every kilometer, with the screen off
-• Live map and route on a map you can zoom
+• Live map and route you can zoom; street map currently for Berlin, Germany only (map data © OpenStreetMap contributors), elsewhere a plain track
 • Vibration cues for intervals
 • Optional voice announcements with your phone's own text-to-speech
 • A privacy zone around your start that is never saved

@@ -15,3 +15,5 @@ Everything here ships inside the app; nothing is downloaded at run time.
 By default the release has no basemap and draws routes as a clean line. To bundle a map, set a repository variable (Settings, Secrets and variables, Actions, Variables) named `BASEMAP_BBOX` to `west,south,east,north` in degrees, for example `13.0,52.3,13.8,52.7` for Berlin. The build downloads that extract (zoom up to 14) with the `pmtiles` tool, cuts it into pieces and writes `region.json`. Keep the box small: a city is a few tens of MB, a country is gigabytes and makes the app huge.
 
 If `region/p0000.pmtiles` or `region.json` is missing, or a route lies outside the box, the app shows the plain line map.
+
+The first-run setup tells users which region has a map (`MAP_REGION` in `index.html`, currently "Berlin, Germany"). Keep it in sync with `BASEMAP_BBOX`.

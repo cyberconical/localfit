@@ -1094,6 +1094,7 @@ window.HM_I18N = { de: {
 "A half marathon or marathon needs at least two runs per week.": "Ein Halbmarathon oder Marathon braucht mindestens zwei Läufe pro Woche.",
 "You already have entries. They stay saved, but a new plan starts with week 1 again, so they may not show up in the plan. Continue?": "Du hast schon Einträge. Sie bleiben gespeichert, aber ein neuer Plan beginnt wieder mit Woche 1, deshalb tauchen sie eventuell nicht im Plan auf. Fortfahren?",
 "Your plan is ready.": "Dein Plan ist fertig.",
+"Street maps are currently only available for {region}. Elsewhere your route is shown as a plain line without a map.": "Straßenkarten gibt es derzeit nur für {region}. Anderswo wird deine Route als einfache Linie ohne Karte gezeigt.",
 "Week 1 starts on {date}.": "Woche 1 beginnt am {date}.",
 "{goal} in {time} on {date}.": "{goal} in {time} am {date}.",
 "{goal} on {date}.": "{goal} am {date}.",
@@ -3751,6 +3752,7 @@ function wizHTML(){
     body=`${w.first
       ? `<p class="wiz-brand">Localfit</p><h2 id="wizH" tabindex="-1">${tr("Welcome. Let's set up your plan.")}</h2>
          <p class="note">${tr("Everything stays on this device. No account, no tracking, no cloud.")}</p>
+         <p class="hint">${tr("Street maps are currently only available for {region}. Elsewhere your route is shown as a plain line without a map.",{region:pick(MAP_REGION)})}</p>
          <div style="margin-top:14px">${chipRow(LANGS, LANG, "data-wlang")}</div>`
       : `<h2 id="wizH" tabindex="-1">${tr("Change your plan")}</h2><p class="note">${tr("Your entries are kept.")}</p>`}
       <label class="lb" style="margin-top:22px">${tr("What do you want to work towards?")}</label>
@@ -3796,6 +3798,8 @@ function wizHTML(){
   return `<div class="wiz-in"><div class="dots" aria-hidden="true">${dots}</div>${body}</div>`;
 }
 const goalName2 = k => pick(GOALS[k].name);
+/* The region the build bundles a street map for (BASEMAP_BBOX in .github/workflows/build.yml / repository variable). Change the name when you change the region. */
+const MAP_REGION = bi("Berlin, Germany","Berlin, Deutschland");
 function wizNext(){
   const w=WZ, g=GOALS[w.goal];
   if(w.step===0){

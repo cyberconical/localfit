@@ -50,7 +50,7 @@ If you lose the upload key, Google can reset it after identity checks, but APKs 
 
 ## 4. Optional: a map for your region
 
-The release has no basemap by default (routes are drawn as a line). To bundle one, add a repository **variable** (not secret) `BASEMAP_BBOX` with `west,south,east,north`, for example `13.0,52.3,13.8,52.7` for Berlin, and build again. Keep the area small, see `map/README.md`. If you do this, the app uses OpenStreetMap data; the copyright notice is already in the README and in `map/README.md`. Consider adding "© OpenStreetMap contributors" to the Play description.
+The release has no basemap by default (routes are drawn as a line). To bundle one, add a repository **variable** (not secret) `BASEMAP_BBOX` with `west,south,east,north`, for example `13.0,52.3,13.8,52.7` for Berlin, and build again. Keep the area small, see `map/README.md`. The official build uses Berlin (`12.95,52.30,13.85,52.72`). The setup screen tells users that street maps are only available for Berlin, Germany: when you change the region, also change `MAP_REGION` in `index.html`. If you do this, the app uses OpenStreetMap data; the copyright notice is already in the README and in `map/README.md`. Consider adding "© OpenStreetMap contributors" to the Play description.
 
 ## 5. Take screenshots
 
