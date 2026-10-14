@@ -3,6 +3,7 @@ name: Build Android
 # Builds the signed APK (direct install, Obtainium, F-Droid style) and the signed AAB (Google Play upload).
 # Without the signing secrets the build still runs and hands out UNSIGNED files, so forks and the very first run work.
 # Secrets: KEYSTORE_BASE64, KEYSTORE_PASSWORD  (see docs/RELEASING.md)
+# Test channel: push to "dev" -> pre-release "dev-N" with localfit.apk. Release to users/Play: merge dev into main, then publish a release.
 # Optional repository variable: BASEMAP_BBOX = "west,south,east,north" bundles an offline map of that region (see map/README.md)
 
 on:
@@ -11,6 +12,10 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
+  # Every push to the dev branch is built and published as a signed PRE-RELEASE (tag dev-<build number>).
+  # Obtainium (setting "Include prereleases") installs these on a phone: the test channel before a real release.
+  push:
+    branches: [dev]
 
 # A new push to the same pull request cancels the older, now outdated run.
 concurrency:
@@ -133,6 +138,7 @@ jobs:
           npx cap sync android
           sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" android/app/build.gradle
           TAG="${{ github.event.release.tag_name }}"
+          if [ "${{ github.event_name }}" = "push" ]; then TAG="dev-${{ github.run_number }}"; fi
           VN="${TAG#v}"
           if [ -z "$VN" ]; then VN="0.0.0"; fi
           sed -i "s/versionName \"1.0\"/versionName \"$VN\"/" android/app/build.gradle
@@ -195,6 +201,22 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "${{ github.event.release.tag_name }}" localfit.apk localfit.aab --clobber
+
+      - name: Publish dev pre-release (Obtainium test channel)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          TAG="dev-${{ github.run_number }}"
+          SHORT=$(git rev-parse --short HEAD)
+          gh release create "$TAG" localfit.apk localfit.aab --prerelease --target "$GITHUB_SHA" \
+            --title "Dev build ${{ github.run_number }} ($SHORT)" \
+            --notes "Test build from the dev branch, commit $SHORT. For testing with Obtainium, not for Google Play."
+          # keep only the five newest dev builds
+          gh release list --limit 100 --json tagName --jq '.[].tagName | select(startswith("dev-"))' | tail -n +6 | while read -r old; do
+            gh release delete "$old" --cleanup-tag --yes
+          done
 
       - name: Upload as artifact
         uses: actions/upload-artifact@v4

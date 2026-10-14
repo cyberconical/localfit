@@ -48,6 +48,31 @@ If you lose the upload key, Google can reset it after identity checks, but APKs 
    - Save and load a backup.
    - Rotate the phone and switch the language.
 
+## 3b. The test channel with Obtainium (branch `dev`)
+
+Work happens on the branch **`dev`**. Every push to `dev` is built, signed and published as a **pre-release** called `dev-<build number>` with `localfit.apk` attached. Obtainium installs these on your phone, so you do not have to download and copy APKs by hand. The five newest dev builds are kept, older ones are deleted automatically.
+
+One-time setup on the phone:
+
+1. In Obtainium, "Add app", paste `https://github.com/cyberconical/localfit`.
+2. Open the app's settings in the add dialog and switch on **"Include prereleases"** (without it Obtainium only sees normal releases).
+3. Add and install. Later: open Obtainium, "Check for updates", and update.
+
+Notes:
+
+- Dev builds use the same app ID and the same key as the real app, so they update each other and a later stable release installs over them. Your data stays.
+- `versionCode` is the build number, so each new dev build is newer than the one before.
+- To switch back to stable only, switch "Include prereleases" off.
+- Dev builds are not for Google Play. Upload to Play only what you released from `main`.
+
+## 3c. From dev to a real release
+
+1. Push your changes to `dev` and test the dev build on your phone.
+2. Open a **pull request from `dev` to `main`** (GitHub offers a "Compare & pull request" button after a push). The checks `build` and `test` run on it.
+3. Merge the pull request.
+4. Releases, "Draft a new release", new tag (for example `v0.1.0`), target `main`, publish. The build attaches the signed `localfit.apk` and `localfit.aab`.
+5. For Google Play, upload that `localfit.aab`, see step 6.
+
 ## 4. Optional: a map for your region
 
 The release has no basemap by default (routes are drawn as a line). To bundle one, add a repository **variable** (not secret) `BASEMAP_BBOX` with `west,south,east,north`, for example `13.0,52.3,13.8,52.7` for Berlin, and build again. Keep the area small, see `map/README.md`. The official build uses Berlin (`12.95,52.30,13.85,52.72`). The setup screen tells users that street maps are only available for Berlin, Germany: when you change the region, also change `MAP_REGION` in `index.html`. If you do this, the app uses OpenStreetMap data; the copyright notice is already in the README and in `map/README.md`. Consider adding "© OpenStreetMap contributors" to the Play description.
