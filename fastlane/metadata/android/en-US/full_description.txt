@@ -1,0 +1,31 @@
+The private, open-source way to train. No account, no cloud, no ads.
+
+LocalFit builds a training plan around your goal and your week, records your runs on a map, and keeps everything on your phone. Nothing is uploaded, nothing is shared, there is no feed. The app has no internet permission at all, and the code is open source so you can check.
+
+YOUR PLAN
+• Choose a goal: 5 km, 10 km, half marathon, marathon, or simply get fitter
+• Pick your level and what you do on which weekday: running, strength, bouldering, calisthenics, stretching, yoga, swimming, cycling or a free workout
+• LocalFit generates the plan on the spot, counts back from your race day and adds intervals, tempo runs, recovery weeks and a taper
+• Adjust any session, or rebuild the plan whenever life changes
+
+RUN WITH GPS (OPTIONAL)
+• Distance, time, pace and every kilometer, with the screen off
+• Live map and route map you can zoom; offline street map currently for Berlin, Germany (map data © OpenStreetMap contributors), elsewhere your track is drawn as a clean line
+• All your routes on one map
+• Vibration cues for intervals and optional voice announcements (English) with your phone's own text-to-speech
+• A privacy zone around your start that is never saved
+
+PRIVATE BY DESIGN
+• No account, no sign-in, no cloud, no social feed
+• No ads, no analytics, no trackers, no Google services
+• No internet permission: the app cannot send your data anywhere
+• Entries live in the app's private storage; backup and restore as a single file you control
+
+MORE
+• Habits with streaks
+• Statistics: kilometers per week, pace trend, shoes and time of day compared, learnings and issues you can mark as solved
+• English and German, light and dark
+
+Free and open source (GPL-3.0). Source code and issues: github.com/cyberconical/localfit
+
+LocalFit is a training aid, not medical advice. If you are unsure whether a plan is right for you, talk to a doctor first.

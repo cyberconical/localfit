@@ -130,6 +130,10 @@ The store set is in `docs/store/`: icon (`icon-512.png`, `icon-1024.png`), featu
 - Google Play's target API requirement rises every year (new apps and updates must target API 36 from 31 August 2026, with extensions possible until 1 November 2026). The build checks `targetSdkVersion = 36`; update it together with Capacitor when Google raises the level again.
 - Keep the keystore backup somewhere safe.
 
+## F-Droid
+
+See [FDROID.md](FDROID.md). Can run in parallel to Google Play; some repository work is needed first.
+
 ## iPhone
 
 See [IOS.md](IOS.md). Not started; it needs a Swift version of the GPS plugin.
