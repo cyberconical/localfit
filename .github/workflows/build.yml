@@ -124,35 +124,8 @@ jobs:
           grep -q 'android:allowBackup="false"' android/app/src/main/AndroidManifest.xml || { echo "allowBackup is not disabled" >&2; exit 1; }
           grep -q 'targetSdkVersion = 36' android/variables.gradle || { echo "targetSdkVersion is not 36" >&2; cat android/variables.gradle; exit 1; }
           python3 -c "import PIL" 2>/dev/null || pip install --break-system-packages pillow
-          python3 - <<'PY'
-          import os
-          from PIL import Image, ImageDraw
-          def draw(size, safe):
-              im = Image.new("RGBA", (size, size), (0, 0, 0, 255))
-              d = ImageDraw.Draw(im)
-              m = size * (1 - safe) / 2
-              x0, x1, cy = m, size - m, size / 2
-              w = x1 - x0
-              th = size * 0.075
-              d.rectangle([x0, cy - th / 2, x0 + w * 0.7, cy + th / 2], fill="white")
-              d.rectangle([x0 + w * 0.7, cy - th / 6, x1, cy + th / 6], fill="white")
-              for k in (0, 5, 10, 15, 20):
-                  x = x0 + w * k / 21.1
-                  d.rectangle([x - size * 0.007, cy + th * 0.9, x + size * 0.007, cy + th * 1.9], fill="white")
-              d.rectangle([x1 - size * 0.014, cy - size * 0.2, x1 + size * 0.014, cy + th * 1.9], fill="white")
-              return im
-          res = "android/app/src/main/res"
-          for name, (leg, fg) in {"mdpi": (48, 108), "hdpi": (72, 162), "xhdpi": (96, 216), "xxhdpi": (144, 324), "xxxhdpi": (192, 432)}.items():
-              d = f"{res}/mipmap-{name}"
-              draw(fg, 0.56).save(f"{d}/ic_launcher_foreground.png")
-              sq = draw(leg * 4, 0.74).resize((leg, leg), Image.LANCZOS)
-              sq.save(f"{d}/ic_launcher.png")
-              mask = Image.new("L", (leg * 4, leg * 4), 0)
-              ImageDraw.Draw(mask).ellipse([0, 0, leg * 4 - 1, leg * 4 - 1], fill=255)
-              rd = draw(leg * 4, 0.62); rd.putalpha(mask)
-              rd.resize((leg, leg), Image.LANCZOS).save(f"{d}/ic_launcher_round.png")
-          open(f"{res}/values/ic_launcher_background.xml", "w").write('<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#000000</color>\n</resources>\n')
-          PY
+          # launcher icons from the one drawing in tools/icons.py (same mark as the store icon)
+          python3 tools/icons.py android android/app/src/main/res
           npx cap sync android
           sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" android/app/build.gradle
           TAG="${{ github.event.release.tag_name }}"

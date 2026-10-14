@@ -1,6 +1,6 @@
 # Google Play listing
 
-Texts to paste into the Play Console. Graphics are in this folder (`icon-512.png`, `feature-graphic-1024x500.png`; re-create with `python3 tools/store-graphics.py`). Phone screenshots (at least 2, ideally 4 to 8) must be taken from the real app, see docs/RELEASING.md.
+Texts to paste into the Play Console. Graphics are in this folder (`icon-512.png`, `feature-graphic-1024x500.png`; re-create with `python3 tools/store-graphics.py`). Phone screenshots: the finished, captioned set is in `play/` (1080x1920) and, for the App Store, `apple/` (1290x2796), made with `python3 tools/store-screenshots.py` from the raw screens in `docs/screenshots/`.
 
 ## App name (max 30 characters)
 
@@ -12,37 +12,35 @@ Local-first training plans. No account, no tracking, no cloud.
 
 ## Full description (max 4000 characters)
 
-Localfit builds a training plan around your goal and your week, and keeps everything on your phone.
+The private, open-source way to train. No account, no cloud, no ads.
 
-On first start you choose a goal (5 km, 10 km, half marathon, marathon or simply getting fitter), your experience and what you do on which weekday: running, strength, bouldering, calisthenics, stretching, yoga, swimming, cycling or a free workout. Localfit generates the plan on the spot, counts back from your race day and adds intervals, tempo runs, recovery weeks and a taper.
+Localfit builds a training plan around your goal and your week, records your runs on a map, and keeps everything on your phone. Nothing is uploaded, nothing is shared, there is no feed. The app has no internet permission at all, and the code is open source so you can check.
 
-PRIVATE BY DESIGN
-• No account, no sign-in, no cloud
-• No ads, no analytics, no trackers, no Google services
-• The app has no internet permission at all, so it cannot send your data anywhere
-• Your entries live in the app's private storage
-
-PLAN
-• Goals from 5 km to marathon, or a 12-week fitness block
-• Sessions per week and sports of your choice
-• Run/walk start for new runners, long runs, intervals, goal-pace sessions if you enter a goal time
+YOUR PLAN
+• Choose a goal: 5 km, 10 km, half marathon, marathon, or simply get fitter
+• Pick your level and what you do on which weekday: running, strength, bouldering, calisthenics, stretching, yoga, swimming, cycling or a free workout
+• Localfit generates the plan on the spot, counts back from your race day and adds intervals, tempo runs, recovery weeks and a taper
 • Adjust any session, or rebuild the plan whenever life changes
 
-GPS RECORDING (OPTIONAL)
+RUN WITH GPS (OPTIONAL)
 • Distance, time, pace and every kilometer, with the screen off
-• Live map and route you can zoom; street map currently for Berlin, Germany only (map data © OpenStreetMap contributors), elsewhere a plain track
-• Vibration cues for intervals
-• Optional voice announcements with your phone's own text-to-speech
+• Live map and route map you can zoom; offline street map currently for Berlin, Germany (map data © OpenStreetMap contributors), elsewhere your track is drawn as a clean line
+• All your routes on one map
+• Vibration cues for intervals and optional voice announcements (English) with your phone's own text-to-speech
 • A privacy zone around your start that is never saved
 
-EVERYTHING ELSE
-• Habits with streaks
-• Statistics: kilometers per week, pace trend, shoes and time of day compared
-• Learnings and issues you can mark as solved
-• English and German, light and dark
-• Backup and restore as a single file
+PRIVATE BY DESIGN
+• No account, no sign-in, no cloud, no social feed
+• No ads, no analytics, no trackers, no Google services
+• No internet permission: the app cannot send your data anywhere
+• Entries live in the app's private storage; backup and restore as a single file you control
 
-Localfit is free and open source (GPL-3.0). The code is on GitHub.
+MORE
+• Habits with streaks
+• Statistics: kilometers per week, pace trend, shoes and time of day compared, learnings and issues you can mark as solved
+• English and German, light and dark
+
+Free and open source (GPL-3.0). Source code and issues: github.com/cyberconical/localfit
 
 Localfit is a training aid, not medical advice. If you are unsure whether a plan is right for you, talk to a doctor first.
 

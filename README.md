@@ -7,7 +7,16 @@
 
 **Local-first training plans. No account, no tracking, no cloud.**
 
-Tell Localfit your goal, your level and your week, and it builds a training plan for you: running, strength, bouldering, yoga and more. Log sessions, record runs with GPS, keep habits and see your statistics. It works completely offline and all data stays on your device.
+The private, open-source alternative to cloud-based running and fitness apps. Tell Localfit your goal, your level and your week, and it builds a training plan for you: running, strength, bouldering, yoga and more. Record runs with GPS on a map, keep habits and see your statistics. No account, no social feed, no uploads: it works completely offline and all data stays on your device. The code is open (GPL-3.0), so you can check that this is true.
+
+<p align="center">
+  <img src="docs/store/play/01-live.png" alt="Live map while recording a run" width="19%">
+  <img src="docs/store/play/02-route.png" alt="Run summary with route on the map and kilometer splits" width="19%">
+  <img src="docs/store/play/03-routes.png" alt="All your routes on one offline map" width="19%">
+  <img src="docs/store/play/04-setup.png" alt="Setup: goal, level and your week" width="19%">
+  <img src="docs/store/play/06-stats.png" alt="Stats: kilometers per week and pace trend" width="19%">
+</p>
+<p align="center"><sub>Demo data. Map data © OpenStreetMap contributors.</sub></p>
 
 ## Highlights
 
