@@ -57,6 +57,9 @@ jobs:
           # Cut a small extract out of the daily Protomaps OpenStreetMap build.
           # If this fails the app still builds (plain line map) and the reason is shown as a warning on the run page.
           set +e
+          # tolerate typos in the variable: spaces, quotes, a trailing full stop
+          BBOX=$(printf '%s' "$BBOX" | tr -d ' "'"'"'\r\n' | sed 's/[.;]*$//')
+          echo "bbox: $BBOX"
           mkdir -p basemap && cd basemap
           fail() { echo "::warning title=Basemap not bundled::$1 | $(tail -c 700 log.txt 2>/dev/null | tr '\n' ' ')"; exit 0; }
           : > log.txt
@@ -85,6 +88,8 @@ jobs:
           BBOX: ${{ vars.BASEMAP_BBOX }}
         run: |
           mkdir www && cp index.html www/ && cp -r fonts map www/
+          BBOX=$(printf '%s' "$BBOX" | tr -d ' "'"'"'\r\n' | sed 's/[.;]*$//')
+          export BBOX
           if [ -f basemap/region.pmtiles ]; then
             # 1 MB pieces: the Android file server cannot do partial reads of one big file (see index.html, baseSource)
             mkdir -p www/map/region
