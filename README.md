@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/store/logo.png" alt="Local Fit" width="200"></p>
+
 # Localfit
 
 [![Latest release](https://img.shields.io/github/v/release/cyberconical/localfit?label=release&color=black)](https://github.com/cyberconical/localfit/releases/latest)
