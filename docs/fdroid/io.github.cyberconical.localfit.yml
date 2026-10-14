@@ -1,0 +1,34 @@
+# DRAFT of the F-Droid build file. It goes into the fork of fdroiddata as metadata/io.github.cyberconical.localfit.yml.
+# Not tested yet: see docs/FDROID.md. Check with `fdroid lint` and `fdroid build` before the merge request.
+Categories:
+  - Sports & Health
+License: GPL-3.0-or-later
+AuthorName: cyberconical
+WebSite: https://github.com/cyberconical/localfit
+SourceCode: https://github.com/cyberconical/localfit
+IssueTracker: https://github.com/cyberconical/localfit/issues
+Changelog: https://github.com/cyberconical/localfit/releases
+
+AutoName: LocalFit
+
+RepoType: git
+Repo: https://github.com/cyberconical/localfit.git
+
+Builds:
+  - versionName: 0.3.2
+    versionCode: 302000
+    commit: v0.3.2
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pil
+    build:
+      - tools/build-android.sh
+      - cd android && ./gradlew assembleRelease --no-daemon
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    ndk: false
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: version.properties|versionCode=(\d+)|.|versionName=(.+)
+CurrentVersion: 0.3.2
+CurrentVersionCode: 302000

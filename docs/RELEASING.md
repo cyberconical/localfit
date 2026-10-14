@@ -121,7 +121,7 @@ The store set is in `docs/store/`: icon (`icon-512.png`, `icon-1024.png`), featu
 
 ### Every later version
 
-1. GitHub, Releases, "Draft a new release", new tag such as `v1.0.1`, publish. The build attaches `localfit.apk` and `localfit.aab`. `versionCode` is the build number and rises by itself.
+1. Set the new version in `version.properties` (`versionName` and `versionCode`, the file explains the scheme), commit it to `dev` and merge to `main`. Then GitHub, Releases, "Draft a new release", new tag `v` plus the versionName (for example `v1.0.1`), publish. The build stops with a clear error if tag and file do not match. The build attaches `localfit.apk` and `localfit.aab`. `versionCode` is the build number and rises by itself.
 2. Download the new `localfit.aab`, create a new release on your Play track and upload it.
 
 ## 7. Before you call it done
@@ -129,6 +129,10 @@ The store set is in `docs/store/`: icon (`icon-512.png`, `icon-1024.png`), featu
 - Check that the name is free to use: search "LocalFit" in the Play Store, in the trademark databases (TMview, DPMA, USPTO) and on GitHub. Names can collide even when the Play Store shows nothing.
 - Google Play's target API requirement rises every year (new apps and updates must target API 36 from 31 August 2026, with extensions possible until 1 November 2026). The build checks `targetSdkVersion = 36`; update it together with Capacitor when Google raises the level again.
 - Keep the keystore backup somewhere safe.
+
+## F-Droid
+
+See [FDROID.md](FDROID.md). Can run in parallel to Google Play; some repository work is needed first.
 
 ## iPhone
 

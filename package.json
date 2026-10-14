@@ -1,0 +1,17 @@
+{
+  "name": "localfit",
+  "version": "0.0.0",
+  "private": true,
+  "description": "LocalFit: local-first training app. This file only pins the Capacitor build dependencies; the app itself is index.html. See tools/build-android.sh.",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "@capacitor/android": "8",
+    "@capacitor/core": "8",
+    "@capacitor/filesystem": "8",
+    "@capacitor/share": "8",
+    "run-tracker": "file:plugins/run-tracker"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8"
+  }
+}
