@@ -1,4 +1,6 @@
-# Localfit
+<p align="center"><img src="docs/store/logo.png" alt="LocalFit" width="200"></p>
+
+# LocalFit
 
 [![Latest release](https://img.shields.io/github/v/release/cyberconical/localfit?label=release&color=black)](https://github.com/cyberconical/localfit/releases/latest)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-black)](LICENSE)
@@ -7,7 +9,7 @@
 
 **Local-first training plans. No account, no tracking, no cloud.**
 
-The private, open-source alternative to cloud-based running and fitness apps. Tell Localfit your goal, your level and your week, and it builds a training plan for you: running, strength, bouldering, yoga and more. Record runs with GPS on a map, keep habits and see your statistics. No account, no social feed, no uploads: it works completely offline and all data stays on your device. The code is open (GPL-3.0), so you can check that this is true.
+The private, open-source alternative to cloud-based running and fitness apps. Tell LocalFit your goal, your level and your week, and it builds a training plan for you: running, strength, bouldering, yoga and more. Record runs with GPS on a map, keep habits and see your statistics. No account, no social feed, no uploads: it works completely offline and all data stays on your device. The code is open (GPL-3.0), so you can check that this is true.
 
 <p align="center">
   <img src="docs/store/play/01-live.png" alt="Live map while recording a run" width="19%">
@@ -31,7 +33,7 @@ The private, open-source alternative to cloud-based running and fitness apps. Te
 
 ## Install
 
-Localfit is not in a store yet. The easiest way is [Obtainium](https://github.com/ImranR98/Obtainium), which detects new versions automatically:
+LocalFit is not in a store yet. The easiest way is [Obtainium](https://github.com/ImranR98/Obtainium), which detects new versions automatically:
 
 1. Install Obtainium.
 2. In Obtainium, tap "Add app" and paste `https://github.com/cyberconical/localfit`.
@@ -139,7 +141,7 @@ README.md                     this file
 
 ## Origin
 
-Localfit grew out of a single-purpose half marathon training app and keeps its classic 27-week plan for existing users.
+LocalFit grew out of a single-purpose half marathon training app and keeps its classic 27-week plan for existing users.
 
 ## License
 

@@ -2,7 +2,7 @@
 
 ## The first five minutes
 
-1. **Do the setup.** On first start Localfit asks for your language, **goal** (5 km, 10 km, half marathon, marathon or general fitness), **level**, race day and an optional goal time, and then for **what you do on each weekday**: runs, strength, bouldering, yoga and so on. It builds your plan. See [[Plan generator|Plan-Generator]].
+1. **Do the setup.** On first start LocalFit asks for your language, **goal** (5 km, 10 km, half marathon, marathon or general fitness), **level**, race day and an optional goal time, and then for **what you do on each weekday**: runs, strength, bouldering, yoga and so on. It builds your plan. See [[Plan generator|Plan-Generator]].
 2. Optionally open Settings (icon at the top right) and enter a **body part you want to watch**, for example your knee. After every run the app then asks how it feels. Leave it empty to turn this off.
 3. In the **Training** tab, log your first session or record a run with GPS.
 4. Save a **backup** regularly, see [[Backup and data|Backup-and-Data]].

@@ -31,7 +31,7 @@ SLIDES = [
     ("map-live.png", 0, "Your runs. Your map. Your data.", "Private, open-source training with GPS and an offline map.", True),
     ("map-route.png", 0, "Every route stays on your phone.", "Pace, splits and route. No account, no uploads, no feed.", False),
     ("map-routes.png", 0, "All your runs on one map.", "Offline and private. Nothing leaves your device.", False),
-    ("setup.png", 0, "A plan in one minute.", "5 km to marathon, or just get fitter. Pick your week, Localfit builds the plan.", False),
+    ("setup.png", 0, "A plan in one minute.", "5 km to marathon, or just get fitter. Pick your week, LocalFit builds the plan.", False),
     ("week.png", 0, "Run, lift, climb, stretch.", "One plan for every sport. Adjust any session.", False),
     ("stats.png", 0, "See what works.", "Pace trends, shoes, time of day. Calculated on your phone.", False),
     ("map-live-dark.png", 0, "Open source. No tracking. No ads.", "No account, no cloud. The code is on GitHub (GPL-3.0).", False),

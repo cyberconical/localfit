@@ -63,7 +63,7 @@ The GPS engine reads interval structure from the description of a session, in En
 What does **not** follow it:
 
 - your own entries (notes, habit names, custom activities, adjusted titles) stay as typed
-- the app's name on the home screen follows the phone's language (“Localfit” in both languages)
+- the app's name on the home screen follows the phone's language (“LocalFit” in both languages)
 - the diagnostic log's event words, which are fixed technical codes
 
 ## Fixing a translation

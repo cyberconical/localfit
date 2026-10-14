@@ -1,8 +1,8 @@
 # Privacy policy
 
-*Localfit, last updated October 2026.*
+*LocalFit, last updated October 2026.*
 
-Localfit is a training app that works entirely on your device. This page says what the app does with your data. The short version: **it collects nothing, sends nothing and has no account.**
+LocalFit is a training app that works entirely on your device. This page says what the app does with your data. The short version: **it collects nothing, sends nothing and has no account.**
 
 ## What the app stores
 

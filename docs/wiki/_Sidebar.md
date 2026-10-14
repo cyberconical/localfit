@@ -1,4 +1,4 @@
-**[[Localfit|Home]]**
+**[[LocalFit|Home]]**
 
 **Use**
 - [[Installation|Installation]]

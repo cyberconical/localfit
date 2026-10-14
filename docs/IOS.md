@@ -1,4 +1,4 @@
-# Localfit for iPhone (App Store): what it takes
+# LocalFit for iPhone (App Store): what it takes
 
 Status: **not started.** The Android app is ready for Google Play; the iPhone version needs real work first. This page is the honest list.
 
@@ -23,7 +23,7 @@ The app itself (`index.html`) is a web app and runs in Capacitor's iOS WebView. 
 1. **Apple Developer Program**: 99 USD per year, https://developer.apple.com/programs/ . Identity verification; an organisation also needs a D-U-N-S number.
 2. **A Mac with Xcode** for the first build and for signing, or a GitHub Actions macOS runner with your certificate and provisioning profile as secrets (a bigger setup; fastlane or `xcodebuild` plus an App Store Connect API key).
 3. **App Store Connect**: create the app with the bundle ID (use `io.github.cyberconical.localfit`, register it first under Certificates, Identifiers and Profiles), then:
-   - Name `Localfit` (30 characters max; "Localfit: Private Training" fits), subtitle (30 characters, for example "Private running plans"), description, keywords, support URL (the GitHub page), privacy policy URL (`PRIVACY.md`).
+   - Name `LocalFit` (30 characters max; "LocalFit: Private Training" fits), subtitle (30 characters, for example "Private running plans"), description, keywords, support URL (the GitHub page), privacy policy URL (`PRIVACY.md`).
    - **App Privacy** questionnaire: data not collected.
    - Age rating questionnaire, export compliance (the app uses no encryption beyond the standard one: answer accordingly), category Health & Fitness.
    - Screenshots: use `docs/store/apple/` (1290 x 2796, the 6.9-inch size; Apple scales it to smaller phones).
@@ -33,10 +33,10 @@ The app itself (`index.html`) is a web app and runs in Capacitor's iOS WebView. 
 
 ## Things the review can catch
 
-- **Guideline 4.2 (minimum functionality)**: Apple rejects apps that are only a website in a wrapper. Localfit has a native location service, background recording, voice and works offline, so it qualifies, but say so in the review note.
+- **Guideline 4.2 (minimum functionality)**: Apple rejects apps that are only a website in a wrapper. LocalFit has a native location service, background recording, voice and works offline, so it qualifies, but say so in the review note.
 - **Location permission text** must explain the real use (recording a run), and the app must work (for example show the plan) if the user denies it.
 - **Background location** needs a justification; it is "when in use with background updates", not "always".
 
 ## Licence
 
-Localfit is GPL-3.0. Apple's App Store terms are in conflict with the GPL for code you distribute under it, so the licence needs care: as the **sole copyright holder** you may publish your own code in the App Store (you are not bound by the GPL for your own work), but as soon as you accept contributions from other people, their code is only under the GPL and cannot simply be put in the App Store without their consent. Before accepting outside contributions, either ask contributors to agree to a licence exception for app stores (a contributor agreement) or decide to publish on the App Store only from code you own. A lawyer or the FSF's licensing guidance can confirm this for your case; this page is not legal advice.
+LocalFit is GPL-3.0. Apple's App Store terms are in conflict with the GPL for code you distribute under it, so the licence needs care: as the **sole copyright holder** you may publish your own code in the App Store (you are not bound by the GPL for your own work), but as soon as you accept contributions from other people, their code is only under the GPL and cannot simply be put in the App Store without their consent. Before accepting outside contributions, either ask contributors to agree to a licence exception for app stores (a contributor agreement) or decide to publish on the App Store only from code you own. A lawyer or the FSF's licensing guidance can confirm this for your case; this page is not legal advice.
