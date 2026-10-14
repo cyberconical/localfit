@@ -7,3 +7,4 @@ node_modules/
 *.keystore
 *.jks
 .font-cache/
+/capacitor.config.json

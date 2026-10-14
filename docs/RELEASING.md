@@ -121,7 +121,7 @@ The store set is in `docs/store/`: icon (`icon-512.png`, `icon-1024.png`), featu
 
 ### Every later version
 
-1. GitHub, Releases, "Draft a new release", new tag such as `v1.0.1`, publish. The build attaches `localfit.apk` and `localfit.aab`. `versionCode` is the build number and rises by itself.
+1. Set the new version in `version.properties` (`versionName` and `versionCode`, the file explains the scheme), commit it to `dev` and merge to `main`. Then GitHub, Releases, "Draft a new release", new tag `v` plus the versionName (for example `v1.0.1`), publish. The build stops with a clear error if tag and file do not match. The build attaches `localfit.apk` and `localfit.aab`. `versionCode` is the build number and rises by itself.
 2. Download the new `localfit.aab`, create a new release on your Play track and upload it.
 
 ## 7. Before you call it done

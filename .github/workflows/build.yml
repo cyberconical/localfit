@@ -4,7 +4,8 @@ name: Build Android
 # Without the signing secrets the build still runs and hands out UNSIGNED files, so forks and the very first run work.
 # Secrets: KEYSTORE_BASE64, KEYSTORE_PASSWORD  (see docs/RELEASING.md)
 # Test channel: push to "dev" -> pre-release "dev-N" with localfit.apk. Release to users/Play: merge dev into main, then publish a release.
-# Optional repository variable: BASEMAP_BBOX = "west,south,east,north" bundles an offline map of that region (see map/README.md)
+# The Berlin map is in the repository (map/data). Optional repository variable BASEMAP_BBOX = "west,south,east,north" replaces it
+# with a fresh extract of that region at build time (see map/README.md). Without the variable, CI and F-Droid build the same app.
 
 on:
   release:
@@ -61,7 +62,7 @@ jobs:
           BBOX=$(printf '%s' "$BBOX" | tr -d ' "'"'"'\r\n' | sed 's/[.;]*$//')
           echo "bbox: $BBOX"
           mkdir -p basemap && cd basemap
-          fail() { echo "::warning title=Basemap not bundled::$1 | $(tail -c 700 log.txt 2>/dev/null | tr '\n' ' ')"; exit 0; }
+          fail() { echo "::warning title=Fresh basemap not used (map/data is used instead)::$1 | $(tail -c 700 log.txt 2>/dev/null | tr '\n' ' ')"; exit 0; }
           : > log.txt
           gh release download --repo protomaps/go-pmtiles --pattern '*Linux_x86_64*' --dir tool >> log.txt 2>&1
           ls tool >> log.txt 2>&1
@@ -83,58 +84,31 @@ jobs:
           ls -l region.pmtiles
           echo "::notice title=Basemap::$(du -h region.pmtiles | cut -f1) extract of $BBOX from build $d"
 
-      - name: Prepare project
-        env:
-          BBOX: ${{ vars.BASEMAP_BBOX }}
+      - name: Version
         run: |
-          mkdir www && cp index.html www/ && cp -r fonts map www/
-          BBOX=$(printf '%s' "$BBOX" | tr -d ' "'"'"'\r\n' | sed 's/[.;]*$//')
-          export BBOX
+          # The release version lives in version.properties (also read by F-Droid). Test builds count up from it.
+          NAME=$(sed -n 's/^versionName=//p' version.properties | tr -d '\r')
+          CODE=$(sed -n 's/^versionCode=//p' version.properties | tr -d '\r')
+          IFS=. read -r MAJ MIN PAT <<< "$NAME"
+          [ "$CODE" = "$(( (MAJ * 10000 + MIN * 100 + PAT) * 1000 ))" ] || { echo "::error::version.properties: versionCode $CODE does not match versionName $NAME (expected (major*10000+minor*100+patch)*1000)"; exit 1; }
+          if [ "${{ github.event_name }}" = "release" ]; then
+            [ "v$NAME" = "${{ github.event.release.tag_name }}" ] || { echo "::error::Release tag ${{ github.event.release.tag_name }} does not match versionName $NAME in version.properties. Change version.properties, merge, and publish the release again."; exit 1; }
+          else
+            NAME="dev-${{ github.run_number }}"
+            CODE=$(( CODE + ${{ github.run_number }} ))
+          fi
+          echo "VERSION_NAME=$NAME" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$CODE" >> "$GITHUB_ENV"
+          echo "version $NAME, code $CODE"
+
+      - name: Prepare project
+        run: |
+          # Same script the F-Droid build uses. A fresh extract from the BASEMAP_BBOX step replaces the map in map/data.
           if [ -f basemap/region.pmtiles ]; then
-            # 1 MB pieces: the Android file server cannot do partial reads of one big file (see index.html, baseSource)
-            mkdir -p www/map/region
-            split -b 1048576 -d -a 4 --additional-suffix=.pmtiles basemap/region.pmtiles www/map/region/p
-            python3 -c "import json,os; b=[float(x) for x in os.environ['BBOX'].split(',')]; json.dump({'bbox':b}, open('www/map/region.json','w'))"
-            echo "basemap pieces: $(ls www/map/region | wc -l)"
-          else echo 'No basemap file, using the line map'; fi
-          npm init -y
-          npm install @capacitor/core@8 @capacitor/android@8 @capacitor/filesystem@8 @capacitor/share@8
-          npm install -D @capacitor/cli@8
-          npm install --install-links ./plugins/run-tracker
-          echo "{\"appId\":\"$APP_ID\",\"appName\":\"$APP_NAME\",\"webDir\":\"www\"}" > capacitor.config.json
-          npx cap add android
-          # No Google services and no automatic cloud backup of app data
-          python3 - <<'PY'
-          import re
-          p = "android/app/build.gradle"
-          t = open(p).read()
-          t = re.sub(r"try \{\s*def servicesJSON.*?\n\}\s*catch\(Exception e\) \{.*?\n\}\n?", "", t, flags=re.S)
-          # keep the big map file uncompressed in the APK, so the WebView can read pieces of it without unpacking it from the start
-          t = re.sub(r"(?m)^android \{\n", "android {\n    androidResources {\n        noCompress 'pmtiles'\n    }\n", t, count=1)
-          open(p, "w").write(t)
-          p = "android/build.gradle"
-          t = open(p).read()
-          t = "\n".join(l for l in t.splitlines() if "com.google.gms:google-services" not in l) + "\n"
-          open(p, "w").write(t)
-          PY
-          sed -i 's/android:allowBackup="true"/android:allowBackup="false"/' android/app/src/main/AndroidManifest.xml
-          if [ "$REMOVE_INTERNET" = "true" ]; then sed -i '/android.permission.INTERNET/d' android/app/src/main/AndroidManifest.xml; fi
-          grep -q "noCompress 'pmtiles'" android/app/build.gradle || { echo "pmtiles would be compressed in the APK" >&2; exit 1; }
-          if grep -rn "google-services" android --include=*.gradle; then echo "Google services plugin is still included" >&2; exit 1; fi
-          grep -q 'android:allowBackup="false"' android/app/src/main/AndroidManifest.xml || { echo "allowBackup is not disabled" >&2; exit 1; }
-          grep -q 'targetSdkVersion = 36' android/variables.gradle || { echo "targetSdkVersion is not 36" >&2; cat android/variables.gradle; exit 1; }
-          python3 -c "import PIL" 2>/dev/null || pip install --break-system-packages pillow
-          # launcher icons from the one drawing in tools/icons.py (same mark as the store icon)
-          python3 tools/icons.py android android/app/src/main/res
-          npx cap sync android
-          sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" android/app/build.gradle
-          TAG="${{ github.event.release.tag_name }}"
-          if [ "${{ github.event_name }}" = "push" ]; then TAG="dev-${{ github.run_number }}"; fi
-          VN="${TAG#v}"
-          if [ -z "$VN" ]; then VN="0.0.0"; fi
-          sed -i "s/versionName \"1.0\"/versionName \"$VN\"/" android/app/build.gradle
-          grep -n "versionCode\|versionName" android/app/build.gradle
-          grep -n "applicationId" android/app/build.gradle
+            export REGION_FILE="$PWD/basemap/region.pmtiles"
+            export REGION_BBOX=$(printf '%s' "${{ vars.BASEMAP_BBOX }}" | tr -d ' "'"'"'\r\n' | sed 's/[.;]*$//')
+          fi
+          tools/build-android.sh
 
       - name: Build APK and AAB
         working-directory: android

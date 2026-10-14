@@ -1,0 +1,2 @@
+New icon and the new name LocalFit.
+The offline map of Berlin is now part of the source code.

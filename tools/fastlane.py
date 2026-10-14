@@ -23,7 +23,7 @@ def section(text, heading):
 
 
 listing = open(os.path.join(STORE, "listing.md"), encoding="utf-8").read()
-shutil.rmtree(OUT, ignore_errors=True)
+shutil.rmtree(os.path.join(OUT, "images"), ignore_errors=True)   # changelogs/ (written by hand, one file per versionCode) stays
 os.makedirs(os.path.join(OUT, "images", "phoneScreenshots"))
 open(os.path.join(OUT, "title.txt"), "w", encoding="utf-8").write(section(listing, "App name"))
 open(os.path.join(OUT, "short_description.txt"), "w", encoding="utf-8").write(section(listing, "Short description"))
