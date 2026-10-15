@@ -1,0 +1,1 @@
+The APK is now signed so that F-Droid can verify its own build against this release (reproducible build). No changes in the app itself.
